@@ -1,11 +1,15 @@
 clear all; clc; % clean the memory and the screen
 
 % define the exact solution for verification purposes
-exact = @(x) x.^3;
-exact_x = @(x) 3*x.^2;
+kappa = @(x) 1 + x.^2;
+exact = @(x) x.^4;
+exact_x = @(x) 4*x.^3;
+%exact = @(x) x.^3;
+%exact_x = @(x) 3*x.^2;
 
 % define the loading and boundary info
-f = @(x) -6*x;        % u,xx + f = 0
+%f = @(x) -6*x;        % u,xx + f = 0
+f = @(x) -12*x.^2 - 20*x.^4;
 g = exact(1);           %     u(1) = g
 h = -exact_x(0);        %  -u,x(0) = h
 
@@ -51,7 +55,7 @@ for ee = 1 : n_el
         dxi_dx = 1.0 / dx_dxi;
 
         for aa = 1 : n_en
-            f_ele(aa) = f_ele(aa) + weight(ll) * PolyShape(pp, aa, xi(ll), 0) * ...
+            f_ele(aa) = f_ele(aa) + weight(ll)*kappa(x_qua) * PolyShape(pp, aa, xi(ll), 0) * ...
                 f(x_qua) * dx_dxi;
 
             for bb = 1 : n_en
@@ -86,7 +90,7 @@ uh_temp = K \ F; % solve K uh = F linear system
 uh = [uh_temp; g];
 
 % calculate relative L2, H1 seminorm, and full H1 errors
-n_int = 6;
+n_int = pp+4;
 [xi, weight] = Gauss(n_int, -1, 1);
 
 errL2sq = 0.0; normL2sq = 0.0;
