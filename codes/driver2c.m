@@ -2,11 +2,14 @@ clear all; clc; % clean the memory and the screen
 
 % define the exact solution for verification purposes
 kappa = @(x) 1 + x.^2;
-exact = @(x) x.^3;
-exact_x = @(x) 3*x.^2;
+exact = @(x) x.^4;
+exact_x = @(x) 4*x.^3;
+%exact = @(x) x.^3;
+%exact_x = @(x) 3*x.^2;
 
 % define the loading and boundary info
-f = @(x) -6*x;        % u,xx + f = 0
+%f = @(x) -6*x;        % u,xx + f = 0
+f = @(x) -12*x.^2 - 20*x.^4;
 g = exact(1);           %     u(1) = g
 h = -exact_x(0);        %  -u,x(0) = h
 
